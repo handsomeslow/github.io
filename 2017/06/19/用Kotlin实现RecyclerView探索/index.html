@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="自从Kotlin被Google钦定后热闹了一阵子，感觉应该拥抱一下互联网，特此记录一下自己的Kotlin学习过程  1、Kotlin介绍Kotlin被Google扶正后，大家学习热情高涨，试着去用一下发现确实好用，有更方便的语言特性，开发起来更加迅速，代码更加简洁，并且与Java兼容！这篇为什么我要改用Kotlin写得很好，也许会激发你学习的热情！但是毕竟是一门语言，学习是一个过程，不可一蹴而就">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Kotlin与爬虫实现RecyclerView新闻列表探索">
+<meta property="og:url" content="http://lovenight.github.io/2017/06/19/用Kotlin实现RecyclerView探索/index.html">
+<meta property="og:site_name" content="我要写代码">
+<meta property="og:description" content="自从Kotlin被Google钦定后热闹了一阵子，感觉应该拥抱一下互联网，特此记录一下自己的Kotlin学习过程  1、Kotlin介绍Kotlin被Google扶正后，大家学习热情高涨，试着去用一下发现确实好用，有更方便的语言特性，开发起来更加迅速，代码更加简洁，并且与Java兼容！这篇为什么我要改用Kotlin写得很好，也许会激发你学习的热情！但是毕竟是一门语言，学习是一个过程，不可一蹴而就">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-35641df08849ce2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-8346a3fada462bc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-ccbf92cb520f75e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-62d43f888062b667.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-0b770c5b8ffa4107.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-8fafd4af7402db11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2476849-374b9b4dd54dca98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-12-15T14:12:12.604Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Kotlin与爬虫实现RecyclerView新闻列表探索">
+<meta name="twitter:description" content="自从Kotlin被Google钦定后热闹了一阵子，感觉应该拥抱一下互联网，特此记录一下自己的Kotlin学习过程  1、Kotlin介绍Kotlin被Google扶正后，大家学习热情高涨，试着去用一下发现确实好用，有更方便的语言特性，开发起来更加迅速，代码更加简洁，并且与Java兼容！这篇为什么我要改用Kotlin写得很好，也许会激发你学习的热情！但是毕竟是一门语言，学习是一个过程，不可一蹴而就">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2476849-35641df08849ce2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lovenight.github.io/2017/06/19/用Kotlin实现RecyclerView探索/"/>
+
+
+
+
+
+  <title>使用Kotlin与爬虫实现RecyclerView新闻列表探索 | 我要写代码</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要写代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">当下虚度年华，终将碌碌无为</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lovenight.github.io/2017/06/19/用Kotlin实现RecyclerView探索/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="HandsomeSlow">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://k1.jsqq.net/uploads/allimg/1611/135K463X-5.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要写代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">使用Kotlin与爬虫实现RecyclerView新闻列表探索</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-19T23:10:08+08:00">
+                2017-06-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>自从Kotlin被Google钦定后热闹了一阵子，感觉应该拥抱一下互联网，特此记录一下自己的Kotlin学习过程</p>
+</blockquote>
+<h2 id="1、Kotlin介绍"><a href="#1、Kotlin介绍" class="headerlink" title="1、Kotlin介绍"></a>1、Kotlin介绍</h2><p>Kotlin被Google扶正后，大家学习热情高涨，试着去用一下发现确实好用，有更方便的语言特性，开发起来更加迅速，代码更加简洁，并且与Java兼容！这篇<a href="http://droidyue.com/blog/2017/05/18/why-do-i-turn-to-kotlin/" target="_blank" rel="noopener">为什么我要改用Kotlin</a>写得很好，也许会激发你学习的热情！但是毕竟是一门语言，学习是一个过程，不可一蹴而就，闲暇时候学点也是极好的。<br>基本的语法可以看一下：<a href="https://www.gitbook.com/book/huanglizhuo/kotlin-in-chinese/details" target="_blank" rel="noopener">Kotlin-in-Chinese</a></p>
+<h2 id="2、配置工程"><a href="#2、配置工程" class="headerlink" title="2、配置工程"></a>2、配置工程</h2><p>Project Gradle：<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">buildscript</span> &#123;</span><br><span class="line">    ext.kotlin_version = <span class="string">'1.1.2-3'</span></span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">dependencies</span> &#123;</span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">'com.android.tools.build:gradle:2.2.2'</span></span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"</span></span><br><span class="line">        <span class="keyword">classpath</span> <span class="string">"org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">allprojects</span> &#123;</span><br><span class="line">    <span class="keyword">repositories</span> &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">task</span> clean(type: <span class="keyword">Delete</span>) &#123;</span><br><span class="line">    <span class="keyword">delete</span> rootProject.buildDir</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>App Gradle：<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">apply</span> plugin: <span class="string">'com.android.application'</span></span><br><span class="line">apply plugin: <span class="string">'kotlin-android'</span></span><br><span class="line">apply plugin: <span class="string">'kotlin-android-extensions'</span></span><br><span class="line"></span><br><span class="line">android &#123;</span><br><span class="line">    <span class="attribute">compileSdkVersion</span> <span class="number">25</span></span><br><span class="line">    buildToolsVersion <span class="string">"25.0.1"</span></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        <span class="attribute">applicationId</span> <span class="string">"com.jun.kotlinlearn"</span></span><br><span class="line">        minSdkVersion <span class="number">15</span></span><br><span class="line">        targetSdkVersion <span class="number">25</span></span><br><span class="line">        versionCode <span class="number">1</span></span><br><span class="line">        versionName <span class="string">"1.0"</span></span><br><span class="line">    &#125;</span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        <span class="section">release</span> &#123;</span><br><span class="line">            <span class="attribute">minifyEnabled</span> <span class="literal">false</span></span><br><span class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dependencies &#123;</span><br><span class="line">    <span class="attribute">compile</span> fileTree(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span><br><span class="line">    compile <span class="string">'com.android.support:appcompat-v7:25.1.1'</span></span><br><span class="line">    testCompile <span class="string">'junit:junit:4.12'</span></span><br><span class="line">    compile <span class="string">"org.jetbrains.kotlin:kotlin-stdlib:<span class="variable">$kotlin_version</span>"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里其实应用<strong>kotlin-android</strong>即可使用Kotlin，但是强烈建议加上kotlin-android-extensions， Kotlin Android Extensions是另一个Kotlin团队研发的插件，让我们用更少的代码来开发程序 。包括了view的绑定。该插件自动创建了很多的属性来让我们直接访问XML中的view，不需要我们在布局中去找到这些views。</p>
+<h2 id="3、AS插件"><a href="#3、AS插件" class="headerlink" title="3、AS插件"></a>3、AS插件</h2><p><img src="http://upload-images.jianshu.io/upload_images/2476849-35641df08849ce2c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Kotlin插件"><br>插件不是必须的，但是不装的话想象不出来怎么写Kotlin，都是Jetbrain出品用起来就是了~</p>
+<h2 id="4、Hello-World"><a href="#4、Hello-World" class="headerlink" title="4、Hello World"></a>4、Hello World</h2><p>对于才创建的工程可以选中后点击Code-&gt;Convert Java File to Kotlin File，将Java文件转换为Kotlin文件：<br><img src="http://upload-images.jianshu.io/upload_images/2476849-8346a3fada462bc2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>转换后的Class风格如下：<br><img src="http://upload-images.jianshu.io/upload_images/2476849-ccbf92cb520f75e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Hello World"></p>
+<p>也可以New kt文件：<br><img src="http://upload-images.jianshu.io/upload_images/2476849-62d43f888062b667.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="New File"><br>以上就是Kotlin在Android studio上的配置与介绍</p>
+<h2 id="实现一个简易的RecyclerView"><a href="#实现一个简易的RecyclerView" class="headerlink" title="实现一个简易的RecyclerView"></a>实现一个简易的RecyclerView</h2><p>经过以上简单的介绍后，下面我们来使用Kotlin来实现Android的简易界面</p>
+<h5 id="首先是Activity代码，只包含了一个RecyclerView"><a href="#首先是Activity代码，只包含了一个RecyclerView" class="headerlink" title="首先是Activity代码，只包含了一个RecyclerView"></a>首先是Activity代码，只包含了一个RecyclerView</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">val</span> items = listOf(</span><br><span class="line">            <span class="string">"给初学者的RxJava2.0教程（七）: Flowable"</span>,</span><br><span class="line">            <span class="string">"Android之View的诞生之谜"</span>,</span><br><span class="line">            <span class="string">"Android之自定义View的死亡三部曲之Measure"</span>,</span><br><span class="line">            <span class="string">"Using ThreadPoolExecutor in Android "</span>,</span><br><span class="line">            <span class="string">"Kotlin 泛型定义与 Java 类似，但有着更多特性支持。"</span>,</span><br><span class="line">            <span class="string">"Android异步的姿势，你真的用对了吗？"</span>,</span><br><span class="line">            <span class="string">"Android 高质量录音库。"</span>,</span><br><span class="line">            <span class="string">"Android 边缘侧滑效果，支持多种场景下的侧滑退出。"</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</span><br><span class="line">        setContentView(R.layout.activity_main)</span><br><span class="line">        <span class="keyword">val</span> listview = findViewById(R.id.list_view) <span class="keyword">as</span> RecyclerView</span><br><span class="line">        listview.layoutManager = LinearLayoutManager(<span class="keyword">this</span>)</span><br><span class="line">        listview.adapter = MainAdapter(items)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所使用的layout文件<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span><span class="meta">?&gt;</span></span></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/activity_main"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingLeft</span>=<span class="string">"10dp"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:paddingRight</span>=<span class="string">"10dp"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/listview"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>对这里不需要find view 也不需要用其它方式bind，直接import即可使用该view，并且也需要set其属性，直接等于就好。</p>
+<h5 id="RecyclerView所使用的Adapter："><a href="#RecyclerView所使用的Adapter：" class="headerlink" title="RecyclerView所使用的Adapter："></a>RecyclerView所使用的Adapter：</h5><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainAdapter</span></span>(<span class="keyword">val</span> items : List&lt;String&gt;) : RecyclerView.Adapter&lt;MainAdapter.ViewHolder&gt;() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: ViewHolder &#123;</span><br><span class="line">        <span class="keyword">return</span> ViewHolder(TextView(parent.context))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> = items.size</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        holder.textView.text = items[position]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>(<span class="keyword">val</span> textView: TextView) : RecyclerView.ViewHolder(textView)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的：<strong>override fun getItemCount(): Int = items.size</strong> 直接返回不需要return，非常方便。</p>
+<h5 id="列表效果图"><a href="#列表效果图" class="headerlink" title="列表效果图"></a>列表效果图</h5><p><img src="http://upload-images.jianshu.io/upload_images/2476849-0b770c5b8ffa4107.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="列表效果图"></p>
+<h2 id="二、使用API实现列表"><a href="#二、使用API实现列表" class="headerlink" title="二、使用API实现列表"></a>二、使用API实现列表</h2><blockquote>
+<p>以上是一个简单的Kotlin使用，list数据是写死的，并没有太多的参考价值，接下来尝试一下调用API实现列表。</p>
+</blockquote>
+<p>1、在此借用<a href="http://gank.io/api" target="_blank" rel="noopener">Gank.io</a>来实现API请求例子：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span></span>(<span class="keyword">val</span> url: String) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> BASE_URL = <span class="string">"http://gank.io/api/"</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">run</span><span class="params">()</span></span>: String &#123;</span><br><span class="line">        <span class="keyword">val</span> resultStr = URL(url).readText()</span><br><span class="line">        <span class="keyword">return</span> resultStr</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里 <strong>URL(url).readText()</strong>就可以将数据请求到，就是这么方便…小规模的请求这个肯定是没问题了</p>
+<p>2、定义GankNews：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">GankNews</span></span>(<span class="keyword">val</span> _id: String,</span><br><span class="line">                    <span class="keyword">val</span> createdAt: String,</span><br><span class="line">                    <span class="keyword">val</span> desc: String,</span><br><span class="line">                    <span class="keyword">val</span> publishedAt: String,</span><br><span class="line">                    <span class="keyword">val</span> type: String,</span><br><span class="line">                    <span class="keyword">val</span> url: String,</span><br><span class="line">                    <span class="keyword">val</span> used: <span class="built_in">Boolean</span>,</span><br><span class="line">                    <span class="keyword">val</span> who: String)</span><br></pre></td></tr></table></figure></p>
+<p>这里不需要像Java那样写set和get，在构造函数内定义成val即可。</p>
+<p>3、再用Gson进行反序列化：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">compile</span> "<span class="selector-tag">com</span><span class="selector-class">.google</span><span class="selector-class">.code</span><span class="selector-class">.gson</span><span class="selector-pseudo">:gson</span><span class="selector-pseudo">:2.8.0"</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataLoader</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getGankNewsList</span><span class="params">(date:<span class="type">String</span>)</span></span>: List&lt;GankNews&gt; &#123;</span><br><span class="line">        <span class="keyword">val</span> url = Request.BASE_URL+date</span><br><span class="line">        <span class="keyword">return</span> Gson().fromJson(Request(url).run(),GankNewsList::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>).<span class="title">results</span></span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样即取到了我们所需的list</p>
+<p>4、RecyclerView所使用的Adapter：<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GankNewsAdapter</span></span>(<span class="keyword">val</span> items : List&lt;GankNews&gt;, <span class="keyword">val</span> itemClickListener: (GankNews)-&gt;<span class="built_in">Unit</span>) : RecyclerView.Adapter&lt;GankNewsAdapter.ViewHolder&gt;() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: ViewHolder &#123;</span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_list_layout, parent, <span class="literal">false</span>)</span><br><span class="line">        <span class="keyword">return</span> ViewHolder(view, itemClickListener)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> = items.size</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        holder.bind(items[position])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>(<span class="keyword">val</span> view: View, <span class="keyword">val</span> itemClickListener: (GankNews) -&gt; <span class="built_in">Unit</span>) : RecyclerView.ViewHolder(view) &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">bind</span><span class="params">(news: <span class="type">GankNews</span>)</span></span> &#123;</span><br><span class="line">            view.title.text = news.desc</span><br><span class="line">            view.desc.text = news.type</span><br><span class="line">            view.setOnClickListener &#123;</span><br><span class="line">                itemClickListener(news)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>6、列表的Fragment，好像也没啥好说的<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GankNewsFragment</span> : <span class="type">Fragment</span></span>() &#123;</span><br><span class="line">    <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">newInstance</span><span class="params">()</span></span> : GankNewsFragment &#123;</span><br><span class="line">            <span class="keyword">var</span> fragment = GankNewsFragment()</span><br><span class="line">            <span class="keyword">return</span> fragment</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateView</span><span class="params">(inflater: <span class="type">LayoutInflater</span>?, container: <span class="type">ViewGroup</span>?, savedInstanceState: <span class="type">Bundle</span>?)</span></span>: View? &#123;</span><br><span class="line">        <span class="keyword">return</span> inflater!!.inflate(R.layout.fragment_news_list_layout, container, <span class="literal">false</span>)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onActivityCreated</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.onActivityCreated(savedInstanceState)</span><br><span class="line">        recyclerView.layoutManager = LinearLayoutManager(activity)</span><br><span class="line">        getGanksNewsList()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">getGanksNewsList</span><span class="params">()</span></span> = doAsync &#123;</span><br><span class="line">        <span class="keyword">val</span> news = DataLoader().getGankNewsList(<span class="string">"data/all/20/2"</span>)</span><br><span class="line">        uiThread &#123;</span><br><span class="line">            recyclerView.adapter = GankNewsAdapter(news) &#123;</span><br><span class="line">                <span class="keyword">val</span> intent = Intent()</span><br><span class="line">                intent.setClass(activity, WebActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">                intent.putExtra(<span class="string">"url"</span>, it.url)</span><br><span class="line">                startActivity(intent)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到使用doAsync和uiThread等相关的函数可以更好进行线程的控制，再也不用写一大堆异步函数了</p>
+<h5 id="列表效果图-1"><a href="#列表效果图-1" class="headerlink" title="列表效果图"></a>列表效果图</h5><p><img src="http://upload-images.jianshu.io/upload_images/2476849-8fafd4af7402db11.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Gank效果图"></p>
+<h3 id="三、使用Jsoup-实现的数据填充"><a href="#三、使用Jsoup-实现的数据填充" class="headerlink" title="三、使用Jsoup 实现的数据填充"></a>三、使用Jsoup 实现的数据填充</h3><blockquote>
+<p>有时候想做点应用，而又没有API时，我们都会使用爬虫去抓取数据应用到我们APP上，而现在Jsoup和Kotlin结合总觉得有珠联璧合的感觉，以下用<a href="http://www.cnbeta.com/" target="_blank" rel="noopener">cnbeta</a>来撸一个新闻列表。</p>
+</blockquote>
+<p>1、首先是Jsoup爬取网页数据<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">loadList</span><span class="params">()</span></span> = doAsync &#123;</span><br><span class="line">        <span class="keyword">val</span> result = getLinks(<span class="string">"http://www.cnbeta.com/"</span>)</span><br><span class="line">        uiThread &#123;</span><br><span class="line">            recyclerView.adapter = MainAdapter(result) &#123;</span><br><span class="line">                <span class="keyword">val</span> url = <span class="string">"http://m.cnbeta.com/view"</span> + it.url.substring(it.url.lastIndexOf(<span class="string">"/"</span>))</span><br><span class="line">                <span class="keyword">val</span> intent = Intent()</span><br><span class="line">                intent.setClass(activity, WebActivity::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></span><br><span class="line">                intent.putExtra(<span class="string">"url"</span>, url)</span><br><span class="line">                startActivity(intent)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">fun</span> <span class="title">getLinks</span><span class="params">(url :<span class="type">String</span>)</span></span>: ArrayList&lt;News&gt;&#123;</span><br><span class="line">        <span class="keyword">val</span> links = ArrayList&lt;News&gt;()</span><br><span class="line">        <span class="keyword">val</span> doc: Document = Jsoup.connect(url).<span class="keyword">get</span>()</span><br><span class="line">        <span class="keyword">val</span> elements: Elements = doc.select(<span class="string">"div.items-area"</span>).first().allElements.first().children()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (e <span class="keyword">in</span> elements) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e.getElementsByTag(<span class="string">"dt"</span>).text().isEmpty())</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            links.add(News(e.getElementsByTag(<span class="string">"dt"</span>).text(),</span><br><span class="line">                    e.getElementsByTag(<span class="string">"dd"</span>).text(),</span><br><span class="line">                    e.select(<span class="string">"a[href]"</span>).first().attr(<span class="string">"href"</span>),</span><br><span class="line">                    e.select(<span class="string">"img[src]"</span>).first().attr(<span class="string">"src"</span>)))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> links</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后加个图片加载器<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">compile</span> "<span class="selector-tag">com</span><span class="selector-class">.github</span><span class="selector-class">.bumptech</span><span class="selector-class">.glide</span><span class="selector-pseudo">:glide</span><span class="selector-pseudo">:3.6.1"</span></span><br></pre></td></tr></table></figure></p>
+<p>再写个adapter<br><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainAdapter</span></span>(<span class="keyword">val</span> items : List&lt;News&gt;, <span class="keyword">val</span> itemClickListener: (News)-&gt;<span class="built_in">Unit</span>) : RecyclerView.Adapter&lt;MainAdapter.ViewHolder&gt;() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: ViewHolder &#123;</span><br><span class="line">        <span class="keyword">val</span> view = LayoutInflater.from(parent.context).inflate(R.layout.item_view_list_layout, parent, <span class="literal">false</span>)</span><br><span class="line">        <span class="keyword">return</span> ViewHolder(view, itemClickListener)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemCount</span><span class="params">()</span></span>: <span class="built_in">Int</span> = items.size</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</span><br><span class="line">        holder.bind(items[position])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>(<span class="keyword">val</span> view: View, <span class="keyword">val</span> itemClickListener: (News)-&gt;<span class="built_in">Unit</span>) : RecyclerView.ViewHolder(view) &#123;</span><br><span class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">bind</span><span class="params">(news: <span class="type">News</span>)</span></span> &#123;</span><br><span class="line">            view.title.text = news.title</span><br><span class="line">            view.desc.text = news.desc</span><br><span class="line">            <span class="keyword">if</span> (news.image.isNotEmpty()) &#123;</span><br><span class="line">                Glide.with(view.context).load(news.image).into(view.image)</span><br><span class="line">                view.image.visibility = View.VISIBLE</span><br><span class="line">            &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">                view.image.visibility = View.GONE</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            view.setOnClickListener &#123;</span><br><span class="line">                itemClickListener(news)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后就已经实现了完整的新闻列表页，效果图如下：</p>
+<h5 id="列表效果图："><a href="#列表效果图：" class="headerlink" title="列表效果图："></a>列表效果图：</h5><p><img src="http://upload-images.jianshu.io/upload_images/2476849-374b9b4dd54dca98.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="cnbeta新闻列表"></p>
+<p><strong>这里的难点可能是网页标签的选取，其它代码和上面的没有什么两样！</strong></p>
+<blockquote>
+<p>以上就是kotlin的一个简单的使用，有不明白的地方可以看一下<strong><a href="https://github.com/handsomeslow/KotlinLearn" target="_blank" rel="noopener">GitHub地址</a></strong>上的源码，如有错误多谢指出！</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag"># Android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/14/微信Android热补丁方案Tinker初步使用/" rel="next" title="微信Android热补丁方案Tinker初步使用">
+                <i class="fa fa-chevron-left"></i> 微信Android热补丁方案Tinker初步使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/30/Android添加悬浮窗的一些总结/" rel="prev" title="Android添加悬浮窗的一些总结">
+                Android添加悬浮窗的一些总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://k1.jsqq.net/uploads/allimg/1611/135K463X-5.jpg"
+                alt="HandsomeSlow" />
+            
+              <p class="site-author-name" itemprop="name">HandsomeSlow</p>
+              <p class="site-description motion-element" itemprop="description">当下虚度年华，终将碌碌无为</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/Tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/handsomeslow" target="_blank" title="Github">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Github</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:handsomeslow@163.com" target="_blank" title="Email">
+                    
+                      <i class="fa fa-fw fa-globe"></i>Email</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.grow666.com" title="我的社区" target="_blank">我的社区</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、Kotlin介绍"><span class="nav-number">1.</span> <span class="nav-text"><a href="#1&#x3001;Kotlin&#x4ECB;&#x7ECD;" class="headerlink" title="1&#x3001;Kotlin&#x4ECB;&#x7ECD;"></a>1&#x3001;Kotlin&#x4ECB;&#x7ECD;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、配置工程"><span class="nav-number">2.</span> <span class="nav-text"><a href="#2&#x3001;&#x914D;&#x7F6E;&#x5DE5;&#x7A0B;" class="headerlink" title="2&#x3001;&#x914D;&#x7F6E;&#x5DE5;&#x7A0B;"></a>2&#x3001;&#x914D;&#x7F6E;&#x5DE5;&#x7A0B;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3、AS插件"><span class="nav-number">3.</span> <span class="nav-text"><a href="#3&#x3001;AS&#x63D2;&#x4EF6;" class="headerlink" title="3&#x3001;AS&#x63D2;&#x4EF6;"></a>3&#x3001;AS&#x63D2;&#x4EF6;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4、Hello-World"><span class="nav-number">4.</span> <span class="nav-text"><a href="#4&#x3001;Hello-World" class="headerlink" title="4&#x3001;Hello World"></a>4&#x3001;Hello World</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现一个简易的RecyclerView"><span class="nav-number">5.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7B80;&#x6613;&#x7684;RecyclerView" class="headerlink" title="&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7B80;&#x6613;&#x7684;RecyclerView"></a>&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x7B80;&#x6613;&#x7684;RecyclerView</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#首先是Activity代码，只包含了一个RecyclerView"><span class="nav-number">5.0.0.1.</span> <span class="nav-text"><a href="#&#x9996;&#x5148;&#x662F;Activity&#x4EE3;&#x7801;&#xFF0C;&#x53EA;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;RecyclerView" class="headerlink" title="&#x9996;&#x5148;&#x662F;Activity&#x4EE3;&#x7801;&#xFF0C;&#x53EA;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;RecyclerView"></a>&#x9996;&#x5148;&#x662F;Activity&#x4EE3;&#x7801;&#xFF0C;&#x53EA;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E2A;RecyclerView</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#RecyclerView所使用的Adapter："><span class="nav-number">5.0.0.2.</span> <span class="nav-text"><a href="#RecyclerView&#x6240;&#x4F7F;&#x7528;&#x7684;Adapter&#xFF1A;" class="headerlink" title="RecyclerView&#x6240;&#x4F7F;&#x7528;&#x7684;Adapter&#xFF1A;"></a>RecyclerView&#x6240;&#x4F7F;&#x7528;&#x7684;Adapter&#xFF1A;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#列表效果图"><span class="nav-number">5.0.0.3.</span> <span class="nav-text"><a href="#&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;" class="headerlink" title="&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;"></a>&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、使用API实现列表"><span class="nav-number">6.</span> <span class="nav-text"><a href="#&#x4E8C;&#x3001;&#x4F7F;&#x7528;API&#x5B9E;&#x73B0;&#x5217;&#x8868;" class="headerlink" title="&#x4E8C;&#x3001;&#x4F7F;&#x7528;API&#x5B9E;&#x73B0;&#x5217;&#x8868;"></a>&#x4E8C;&#x3001;&#x4F7F;&#x7528;API&#x5B9E;&#x73B0;&#x5217;&#x8868;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#列表效果图-1"><span class="nav-number">6.0.0.1.</span> <span class="nav-text"><a href="#&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;-1" class="headerlink" title="&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;"></a>&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、使用Jsoup-实现的数据填充"><span class="nav-number">6.1.</span> <span class="nav-text"><a href="#&#x4E09;&#x3001;&#x4F7F;&#x7528;Jsoup-&#x5B9E;&#x73B0;&#x7684;&#x6570;&#x636E;&#x586B;&#x5145;" class="headerlink" title="&#x4E09;&#x3001;&#x4F7F;&#x7528;Jsoup &#x5B9E;&#x73B0;&#x7684;&#x6570;&#x636E;&#x586B;&#x5145;"></a>&#x4E09;&#x3001;&#x4F7F;&#x7528;Jsoup &#x5B9E;&#x73B0;&#x7684;&#x6570;&#x636E;&#x586B;&#x5145;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#列表效果图："><span class="nav-number">6.1.0.1.</span> <span class="nav-text"><a href="#&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;&#xFF1A;" class="headerlink" title="&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;&#xFF1A;"></a>&#x5217;&#x8868;&#x6548;&#x679C;&#x56FE;&#xFF1A;</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HandsomeSlow</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
